@@ -4,19 +4,23 @@
   "description": "Alexa skill that lets you control a BGH Smart Control device.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tomasmigone/alexa-skill-bgh-smart-control.git"
   },
   "author": "Tomás Migone <tomasmigone@gmail.com> (http://www.p4d.com.ar)",
-  "license": "MIT",
+  "license": "WTFPL",
   "bugs": {
     "url": "https://github.com/tomasmigone/alexa-skill-bgh-smart-control/issues"
   },
   "homepage": "https://github.com/tomasmigone/alexa-skill-bgh-smart-control#readme",
   "devDependencies": {
     "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "request": "^2.85.0"
   }
 }
