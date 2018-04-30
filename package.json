@@ -4,7 +4,8 @@
   "description": "Alexa skill that lets you control a BGH Smart Control device.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lambda": "rm lambda.zip && zip -r -X lambda.zip *"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,6 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "request": "^2.85.0"
+    "bgh-smart-control": "github:tomasmigone/bgh-smart-control-js"
   }
 }
