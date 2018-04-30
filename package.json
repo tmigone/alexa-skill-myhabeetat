@@ -21,6 +21,6 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "bgh-smart-control": "github:tomasmigone/bgh-smart-control-js"
+    "bgh-smart-control": "github:tomasmigone/bgh-smart-control"
   }
 }
