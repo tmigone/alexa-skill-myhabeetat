@@ -1,71 +1,118 @@
-'use strict'
+const MyHabeetat = require('myhabeetat')
 
-const BGH = require('bgh-smart-control')
-
-exports.handler = async (request, context, callback) => {
-  let directive = request.directive.header.name
-  switch (directive) {
-    case 'Discover': {
-      await handleDiscovery(request, callback)
-      break
-    }
-
-    default: {
-      const errorMessage = `Directive not supported: ${directive}`
-      console.log('[ERROR] %s', errorMessage)
-      callback(new Error(errorMessage))
+exports.handler = async function (request, context) {
+  log("DEBUG:", "Request", JSON.stringify(request));
+  if (request.directive.header.namespace === 'Alexa.Discovery' && request.directive.header.name === 'Discover') {
+    log("DEBUG:", "Discover request", JSON.stringify(request));
+    await handleDiscovery(request, context, "");
+  }
+  else if (request.directive.header.namespace === 'Alexa.PowerController') {
+    if (request.directive.header.name === 'TurnOn' || request.directive.header.name === 'TurnOff') {
+      log("DEBUG:", "TurnOn or TurnOff Request", JSON.stringify(request));
+      handlePowerControl(request, context);
     }
   }
-}
 
-async function handleDiscovery (request, callback) {
-  try {
-    const userAccessToken = request.directive.payload.scope.token.trim()
+  async function handleDiscovery (request, context) {
+    const token = request.directive.payload.scope.token.trim()
+    let homes = await MyHabeetat.getHomes(token)
+    let devices = await MyHabeetat.getDevices(token, homes[ 0 ])
 
-    let endpoint = await getDevicesFromBGHService(userAccessToken)
     var payload = {
-      endpoints: [ endpoint ]
-    }
-    var header = request.directive.header
-    header.name = 'Discover.Response'
-    console.log('DEBUG', 'Discovery Response: ', JSON.stringify({ header: header, payload: payload }))
-    callback(null, { event: { header: header, payload: payload } })
-  } catch (error) {
-    console.log(error)
+      "endpoints":
+        [
+          {
+            "endpointId": devices[ 0 ].id,
+            "manufacturerName": "Solidmation",
+            "friendlyName": devices[ 0 ].name,
+            "description": "BGH Smart Control device",
+            "displayCategories": [ "THERMOSTAT" ],
+            "cookie": {
+              "home": devices[ 0 ].home,
+              "model": devices[ 0 ].model,
+              "endpoint": devices[ 0 ].endpoint
+            },
+            "capabilities":
+              [
+                {
+                  "type": "AlexaInterface",
+                  "interface": "Alexa",
+                  "version": "3"
+                },
+                {
+                  "interface": "Alexa.ThermostatController",
+                  "version": "3",
+                  "type": "AlexaInterface",
+                  "properties": {
+                    "supported": [ {
+                      "name": "lowerSetpoint",
+                      "name": "targetSetpoint",
+                      "name": "upperSetpoint",
+                      "name": "thermostatMode"
+                    } ],
+                    "retrievable": true
+                  }
+                }
+              ]
+          }
+        ]
+    };
+    var header = request.directive.header;
+    header.name = "Discover.Response";
+    log("DEBUG", "Discovery Response: ", JSON.stringify({ header: header, payload: payload }));
+    context.succeed({ event: { header: header, payload: payload } });
   }
-}
 
-async function getDevicesFromBGHService (token) {
-  try {
-    let bgh = new BGH()
-    bgh.setAccessToken(token)
-    let device = await bgh.getDevice()
-
-    let endpoint = {
-      endpointId: device.id,
-      manufacturerName: 'BGH',
-      friendlyName: device.name,
-      description: 'BGH Smart Home device.',
-      displayCategories: ['THERMOSTAT'],
-      cookie: {},
-      capabilities: [{
-        type: 'AlexaInterface',
-        interface: 'Alexa.ThermostatController',
-        version: '3',
-        properties: {
-          supported: [
-            { 'name': 'lowerSetpoint' },
-            { 'name': 'targetSetpoint' },
-            { 'name': 'upperSetpoint' },
-            { 'name': 'thermostatMode' }
-          ],
-          proactivelyReported: false,
-          retrievable: true
-        }
-      }]
-    }
-    return endpoint
-  } catch (error) {
-    console.log(error)
+  function log (message, message1, message2) {
+    console.log(message + message1 + message2);
   }
-}
+
+  function handlePowerControl (request, context) {
+    // get device ID passed in during discovery
+    var requestMethod = request.directive.header.name;
+    var responseHeader = request.directive.header;
+    responseHeader.namespace = "Alexa";
+    responseHeader.name = "Response";
+    responseHeader.messageId = responseHeader.messageId + "-R";
+    // get user token pass in request
+    var requestToken = request.directive.endpoint.scope.token;
+    var powerResult;
+
+    if (requestMethod === "TurnOn") {
+
+      // Make the call to your device cloud for control
+      // powerResult = stubControlFunctionToYourCloud(endpointId, token, request);
+      powerResult = "ON";
+    }
+    else if (requestMethod === "TurnOff") {
+      // Make the call to your device cloud for control and check for success
+      // powerResult = stubControlFunctionToYourCloud(endpointId, token, request);
+      powerResult = "OFF";
+    }
+    var contextResult = {
+      "properties": [ {
+        "namespace": "Alexa.PowerController",
+        "name": "powerState",
+        "value": powerResult,
+        "timeOfSample": "2017-09-03T16:20:50.52Z", //retrieve from result.
+        "uncertaintyInMilliseconds": 50
+      } ]
+    };
+    var response = {
+      context: contextResult,
+      event: {
+        header: responseHeader,
+        endpoint: {
+          scope: {
+            type: "BearerToken",
+            token: requestToken
+          },
+          endpointId: "demo_id"
+        },
+        payload: {}
+      }
+    };
+    log("DEBUG", "Alexa.PowerController ", JSON.stringify(response));
+    context.succeed(response);
+  }
+};

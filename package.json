@@ -9,18 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tomasmigone/alexa-skill-bgh-smart-control.git"
+    "url": "git+https://github.com/tmigone/alexa-skill-bgh-smart-control.git"
   },
-  "author": "Tomás Migone <tomasmigone@gmail.com> (http://www.p4d.com.ar)",
-  "license": "WTFPL",
+  "author": "Tomás Migone <tomasmigone@gmail.com>",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tomasmigone/alexa-skill-bgh-smart-control/issues"
+    "url": "https://github.com/tmigone/alexa-skill-bgh-smart-control/issues"
   },
-  "homepage": "https://github.com/tomasmigone/alexa-skill-bgh-smart-control#readme",
+  "homepage": "https://github.com/tmigone/alexa-skill-bgh-smart-control#readme",
   "devDependencies": {
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "bgh-smart-control": "github:tomasmigone/bgh-smart-control"
+    "myhabeetat": "^1.4.0"
   }
 }
