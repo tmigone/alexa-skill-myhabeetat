@@ -58,3 +58,6 @@ typings/
 .env
 
 *.zip
+
+test.js
+.DS_Store
