@@ -38,6 +38,8 @@ Utterance: `Alexa, set <device> to <mode>`
 
 Available modes: `heat`, `cool`, `auto`
 
+
+
 Other commands might also work but are untested, feel free to PR or let me know and I'll add them here.
 
 # Installation
