@@ -261,7 +261,7 @@ function buildEndpointsFromDevices (devices) {
             retrievable: true
           },
           configuration: {
-            supportedModes: [ "AUTO", "HEAT", "COOL", "OFF" ], <--- HERE FUKER
+            supportedModes: [ "AUTO", "HEAT", "COOL", "OFF" ],
             supportsScheduling: false
           }
         },

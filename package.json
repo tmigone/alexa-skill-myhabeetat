@@ -1,7 +1,7 @@
 {
-  "name": "alexa-skill-bgh-smart-control",
+  "name": "alexa-skill-myhabeetat",
   "version": "1.0.0",
-  "description": "Alexa skill that lets you control a BGH Smart Control device.",
+  "description": "Alexa skill that lets you control MyHabeetat devices, including BGH Smart.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tmigone/alexa-skill-bgh-smart-control.git"
+    "url": "git+https://github.com/tmigone/alexa-skill-myhabeetat.git"
   },
   "author": "Tomás Migone <tomasmigone@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tmigone/alexa-skill-bgh-smart-control/issues"
+    "url": "https://github.com/tmigone/alexa-skill-myhabeetat/issues"
   },
-  "homepage": "https://github.com/tmigone/alexa-skill-bgh-smart-control#readme",
+  "homepage": "https://github.com/tmigone/alexa-skill-myhabeetat#readme",
   "devDependencies": {
     "standard": "^11.0.1"
   },
