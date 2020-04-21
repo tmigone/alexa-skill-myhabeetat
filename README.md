@@ -2,40 +2,47 @@
 
 Alexa skill that lets you control MyHabeetat devices, including BGH Smart Control.
 
-### Disclaimer
+### Disclaimer
 ⚠️⚠️⚠️This project is in no way official, endorsed or associated with or by Solidmation/MyHabeetat/BGH ⚠️⚠️⚠️
 
 Unfortunately this means I can not submit the skill to the Alexa Skills Store on their behalf, and none of the involved parties seem to be interested in doing it either. 
 You can get around that by creating your own development skill, which will only be available for your account (it's what I'm currently using and it works like a charm). See [Installation](#Installation) instructions below for a detailed step by step.
 
 ### MyHabeetat vs BGH Smart Control
-This skill implements integration with [MyHabeetat's](https://myhabeetat.solidmation.com/login.html) cloud platform which allows among other things to control BGH Smart Control devices.
-This skill **has not** been tested to work with [BGH Smart Control's](https://bgh-services.solidmation.com/control/LoginPage.aspx) cloud platform.
+This skill implements integration with [MyHabeetat's](https://myhabeetat.solidmation.com/login.html) cloud platform which allows among other things to control BGH Smart Control devices. This skill **has not** been tested to work with [BGH Smart Control's](https://bgh-services.solidmation.com/control/LoginPage.aspx) cloud platform.
+
 Both platforms were developed by the same company and are essentially the same but MyHabeetat allows for adding more devices. If you have your devices registered under the BGH Smart Control's platform or smartphone app please consider migrating to MyHabeetat's platform/app.
 
 # Usage
 Accepts the following standard [Thermostat](https://developer.amazon.com/en-US/docs/alexa/device-apis/alexa-thermostatcontroller.html#utterances) commands:
 
 **Turn on**
+
 Utterance: `Alexa, turn on <device>`
+
 *Initially set to `auto` mode when turned on*
 
 **Turn off**
+
 Utterance: `Alexa, turn off <device>`
 
 **Set temperature**
+
 Utterance: `Alexa, set <device> to <temperature>`
+
 *Sometimes Alexa replies with `<device> is not responding` even though the command is successfully executed. See #1 for details*
 
 **Set mode**
+
 Utterance: `Alexa, set <device> to <mode>`
+
 Available modes: `heat`, `cool`, `auto`
 
 Other commands might also work but are untested, feel free to PR or let me know and I'll add them here.
 
 # Installation
 
-## Overview
+## Overview
 
 The process of installing your own custom skill is not as simple as installing one from the Skills Store so I added this installation section to hopefully guide you throughout the way. 
 You don't really need to have programming skills or be very tech savvy to get it up and running, anyone can do it. What you do need is to pay close attention to each step as one misconfiguration can be difficult to trace or debug. Feel free to reach out if you run into any trouble and I'll be happy to assist you; to do so, please open an issue [here](https://github.com/tmigone/alexa-skill-myhabeetat/issues) or send me an email at `tomasmigone@gmail.com`.
@@ -44,7 +51,7 @@ There are two distinct pieces we need to create and configure to get our skill w
 - Alexa Custom Skill: Integration with Alexa ecosystem.
 - AWS Lambda Function: Backend code that interacts with MyHabeetat's cloud platform.
 
-## Step 1: Alexa Custom Skill
+## Step 1: Alexa Custom Skill
 
 Custom skills allow you to create an Alexa skill that follows the Alexa protocol, endpoints and utterance model but that relays command execution to other services, in this case a Lambda function. 
 
@@ -61,7 +68,7 @@ To create your custom skill:
 
 We'll go back to the skill configuration, but before we need to create the Lambda function.
 
-## Step 2: AWS Lambda Function
+## Step 2: AWS Lambda Function
 
 The code that interacts with MyHabeetat's platform is hosted as a Lambda function on AWS. AWS Lambda is a service that lets you run code in the cloud without managing servers. Alexa sends your skill requests and your code inspects the request, takes any necessary actions such as communicating with the device cloud for that customer, and then sends back a response.
 
@@ -98,7 +105,7 @@ Next we will be creating the Lambda function that will run our code.
 10. Copy the `ARN` string that is located on the top right corner. It looks like this: `arn:aws:lambda:us-east-1:901579287795:function:myHabeetat`. 
 
 
-## Step 3: Alexa Custom Skill configuration
+## Step 3: Alexa Custom Skill configuration
 Next up is to finish off the skill configuration.
 
 1. Navigate back to the [Alexa developer](https://developer.amazon.com/alexa/console/ask) console.
@@ -128,5 +135,5 @@ Last step is to install the development skill we just created on our smartphone.
 5. Open the skill, click `Enable to use`.
 6. Log in with your [MyHabeetat](https://myhabeetat.solidmation.com/login.html) credentials and follow the rest of the wizard through the end.
 
-
+---
 Congratulations! You can now ludicrously control your devices with voice commands!
